@@ -1,0 +1,46 @@
+<div class="w-full flex absolute justify-between items-center border-b border-black p-4">
+
+    <div class="flex">
+
+        <figure class="w-12 mr-2">
+            <img class="rounded-full" [src]="unknow" alt="Unknow User">
+        </figure>
+
+        <div class="flex content-between flex-wrap">
+            <h2 class="w-full">Angu Tamba</h2>
+            <span>Last seen today at 1:30 PM</span>
+        </div>
+
+    </div>
+
+    <div>
+        <span>X</span>
+    </div>
+
+</div>
+
+<div class="overflow-auto absolute top-0 bottom-0 px-4 pb-16" style="top: 100px">
+
+    <div *ngFor="let message of messages" class="flex mb-6"
+        [ngClass]="message.from === 2 ? 'flex-row' : 'flex-row-reverse'">
+
+        <figure class="w-12 flex-shrink-0">
+            <img class="rounded-full" [src]="unknow" alt="Unknow User">
+        </figure>
+
+        <span class="text-sm text-white rounded bg-blue-500 mx-6 p-2">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro fuga veniam omnis aspernatur, corporis
+            consequatur laboriosam dolorem molestias. Hic voluptatem suscipit iusto ut, itaque error cumque incidunt
+            eaque. Facilis, fuga!
+        </span>
+
+    </div>
+
+</div>
+
+<form class="w-full flex absolute bottom-0 bg-white px-4">
+    <input class="w-full focus:outline-none py-6 px-4" type="text" placeholder="Type a message...">
+    <button class="focus:outline-none">
+        <fa-icon class="" icon="paper-plane"></fa-icon>
+    </button>
+</form>

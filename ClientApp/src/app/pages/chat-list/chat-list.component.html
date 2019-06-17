@@ -1,0 +1,32 @@
+<p class="mb-4 p-4">Conversations</p>
+
+<form class="mb-4 px-4">
+    <div class="flex border">
+        <fa-icon class="mr-2" icon="search"></fa-icon>
+        <input class="w-full" type="search" placeholder="Search">
+    </div>
+</form>
+
+<div class="flex justify-between mb-6 px-4">
+    <span>Recent Chats</span>
+    <span>New chat</span>
+</div>
+
+<div class="flex hover:bg-blue-200 mb-4 py-2 px-4" *ngFor="let item of items">
+
+    <figure class="w-20 float-left mr-4">
+        <img class="rounded-full" [src]="unknow" alt="Unknow User">
+    </figure>
+
+    <div class="flex content-between flex-wrap">
+        <div class="w-full flex justify-between items-center">
+            <h3>Angu Tamba</h3>
+            <div class="rounded-full w-2 h-2 bg-green-400"></div>
+        </div>
+
+        <div class="w-full flex justify-between">
+            <span>It should be done.</span>
+            <span>3:57 PM</span>
+        </div>
+    </div>
+</div>
