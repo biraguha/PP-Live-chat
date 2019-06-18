@@ -65,6 +65,12 @@ namespace livechat
 
             app.UseSpa(spa =>
             {
+
+                // if (env.IsProduction())
+                // {
+                //     spa.Options.SourcePath = "ClientApp/dist";
+                // }
+
                 // if (env.IsProduction())
                 // {
                 //     spa.UseSpaPrerendering(options => 
@@ -74,11 +80,11 @@ namespace livechat
                 //     });
                 // }
 
-                // if (env.IsDevelopment())
-                // {
-                //     spa.Options.SourcePath = "ClientApp";
-                //     spa.UseAngularCliServer(npmScript: "start");
-                // }
+                if (env.IsDevelopment())
+                {
+                    // spa.Options.SourcePath = "ClientApp";
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
             });
         }
     }
