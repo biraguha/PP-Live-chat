@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using livechat.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
@@ -38,10 +37,10 @@ namespace livechat
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSignalR();
-            // services.AddSpaStaticFiles(configuration =>
-            // {
-            //     configuration.RootPath = "ClientApp/dist";
-            // });
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,13 +57,19 @@ namespace livechat
                 app.UseHttpsRedirection();
             }
 
-            // app.UseSpaStaticFiles();
+            app.UseSpaStaticFiles();
             app.UseCors("CorsPolicy");
             app.UseSignalR(routes => routes.MapHub<ChatHub>("/chat"));
             app.UseMvc();
 
             app.UseSpa(spa =>
             {
+
+                // if (env.IsProduction())
+                // {
+                //     spa.Options.SourcePath = "ClientApp/dist";
+                // }
+
                 // if (env.IsProduction())
                 // {
                 //     spa.UseSpaPrerendering(options => 
@@ -74,11 +79,11 @@ namespace livechat
                 //     });
                 // }
 
-                // if (env.IsDevelopment())
-                // {
-                //     spa.Options.SourcePath = "ClientApp";
-                //     spa.UseAngularCliServer(npmScript: "start");
-                // }
+                if (env.IsDevelopment())
+                {
+                    spa.Options.SourcePath = "ClientApp";
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
             });
         }
     }

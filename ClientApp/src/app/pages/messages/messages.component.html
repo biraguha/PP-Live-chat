@@ -19,26 +19,33 @@
 
 </div>
 
-<div class="overflow-auto absolute top-0 bottom-0 px-4 pb-16" style="top: 100px">
+<div 
+    *ngIf="(userLogged$ | async) as user" 
+    class="overflow-auto w-full absolute top-0 bottom-0 px-4 pb-16" 
+    style="top: 100px">
 
-    <!-- <div *ngFor="let message of messages" class="flex mb-6"
-        [ngClass]="message.from === 2 ? 'flex-row' : 'flex-row-reverse'"> -->
-    <div *ngFor="let message of messages" class="flex mb-6">
+    <div 
+        *ngFor="let message of messages$ | async" 
+        class="flex mb-6"
+        [ngClass]="message.author === user.id ? 'flex-row-reverse' : 'flex-row'">
+
         <figure class="w-12 flex-shrink-0">
             <img class="rounded-full" [src]="unknow" alt="Unknow User">
         </figure>
 
-        <span class="text-sm text-white rounded bg-blue-500 mx-6 p-2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro fuga veniam omnis aspernatur, corporis
-            consequatur laboriosam dolorem molestias. Hic voluptatem suscipit iusto ut, itaque error cumque incidunt
-            eaque. Facilis, fuga!
-        </span>
+        <div class="text-sm text-white rounded bg-blue-500 mx-6 p-2">
+            <span>{{ message.content }}</span>
+        </div>
 
     </div>
 
 </div>
 
-<form class="w-full flex absolute bottom-0 bg-white px-4" [formGroup]="msgForm" (ngSubmit)="onSubmit()">
+<form 
+    *ngIf="(userLogged$ | async) as user" 
+    class="w-full flex absolute bottom-0 bg-white px-4" 
+    [formGroup]="msgForm" 
+    (ngSubmit)="onSubmit(user)">
 
     <input class="w-full focus:outline-none py-6 px-4" type="text" placeholder="Type a message..."
         formControlName="content">

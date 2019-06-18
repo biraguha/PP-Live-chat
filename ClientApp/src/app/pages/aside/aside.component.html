@@ -2,7 +2,7 @@
     <figure class="w-24 inline-block my-4">
         <img class="rounded-full" [src]="unknow" alt="Unknow User">
     </figure>
-    <p>John Doe</p>
+    <p>{{ (userLogged$ | async)?.username }}</p>
 </div>
 
 <ul class="mb-10">

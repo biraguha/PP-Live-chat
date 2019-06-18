@@ -13,7 +13,6 @@ export class HomeComponent implements OnInit {
         this.chatService.startConnection();
     }
 
-    ngOnInit() {
-    }
+    ngOnInit() { }
 
 }

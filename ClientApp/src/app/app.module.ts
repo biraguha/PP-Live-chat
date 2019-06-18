@@ -5,8 +5,7 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faSearch, faPaperPlane);
 
@@ -17,6 +16,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { AsideComponent } from './pages/aside/aside.component';
 import { MessagesComponent } from './pages/messages/messages.component';
 import { ChatListComponent } from './pages/chat-list/chat-list.component';
+import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +25,8 @@ import { ChatListComponent } from './pages/chat-list/chat-list.component';
         HomeComponent,
         AsideComponent,
         MessagesComponent,
-        ChatListComponent
+        ChatListComponent,
+        LoginComponent
     ],
     imports: [
         BrowserModule,

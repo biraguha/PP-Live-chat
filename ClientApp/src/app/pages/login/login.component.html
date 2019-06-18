@@ -1,0 +1,25 @@
+<div *ngIf="!(isLoggedIn$ | async)" class="fixed z-10 inset-0 w-full h-full pt-40" style="background-color: rgba(0,0,0,0.4);">
+    <form 
+        [formGroup]="loginForm" 
+        (ngSubmit)="onSubmit()" 
+        class="bg-white max-w-md m-auto p-6 rounded-lg">
+
+        <p class="mb-4">Login</p>
+
+        <div class="mb-4">
+            <label for="username">Username</label>
+            <input class="border w-full p-2" type="text" formControlName="username" name="username">
+        </div>
+
+        <div class="mb-4">
+            <label for="password">Password</label>
+            <input class="border w-full p-2" type="text" formControlName="password" name="password">
+        </div>
+
+        <div class="flex">
+            <input class="w-full mr-2 p-2" type="submit" value="Login">
+            <input class="w-full ml-2 p-2" type="reset" value="Cancel">
+        </div>
+
+    </form>
+</div>
