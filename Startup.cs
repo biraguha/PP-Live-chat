@@ -52,11 +52,24 @@ namespace livechat
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
+
+                // if (env.IsProduction())
+                // {
+                //     spa.Options.SourcePath = "ClientApp/dist";
+                // }
+
+                // if (env.IsProduction())
+                // {
+                //     spa.UseSpaPrerendering(options => 
+                //     {
+                //         options.BootModulePath = $"{ spa.Options.SourcePath }/dist/server/main.js";
+                //         options.ExcludeUrls = new [] { "/sockjs-node" };
+                //     });
+                // }
 
                 if (env.IsDevelopment())
                 {
-
+                    // spa.Options.SourcePath = "ClientApp";
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
