@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
+
+import { ChatService } from 'src/app/services/chat.service';
 
 @Component({
     selector: 'livechat-messages',
@@ -9,6 +12,7 @@ import { Component, OnInit } from '@angular/core';
 export class MessagesComponent implements OnInit {
 
     public unknow: string = 'assets/unknow-user.jpg';
+
     public messages = [
         { from: 1 }, { from: 2 },
         { from: 2 }, { from: 1 },
@@ -19,8 +23,20 @@ export class MessagesComponent implements OnInit {
         { from: 2 }, { from: 1 }
     ];
 
-    constructor() { }
+    public msgForm = new FormGroup({
+        content: new FormControl('')
+    });
+
+    constructor(private chatService: ChatService) { }
 
     ngOnInit() { }
+
+    onSubmit() {
+        let msg = this.msgForm.value.content;
+        // TODO: Use EventEmitter with form value
+        // console.warn(msg);
+        this.chatService.sendMessage(msg);
+        this.msgForm.reset();
+    }
 
 }

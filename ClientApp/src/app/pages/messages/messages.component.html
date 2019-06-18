@@ -21,9 +21,9 @@
 
 <div class="overflow-auto absolute top-0 bottom-0 px-4 pb-16" style="top: 100px">
 
-    <div *ngFor="let message of messages" class="flex mb-6"
-        [ngClass]="message.from === 2 ? 'flex-row' : 'flex-row-reverse'">
-
+    <!-- <div *ngFor="let message of messages" class="flex mb-6"
+        [ngClass]="message.from === 2 ? 'flex-row' : 'flex-row-reverse'"> -->
+    <div *ngFor="let message of messages" class="flex mb-6">
         <figure class="w-12 flex-shrink-0">
             <img class="rounded-full" [src]="unknow" alt="Unknow User">
         </figure>
@@ -38,9 +38,13 @@
 
 </div>
 
-<form class="w-full flex absolute bottom-0 bg-white px-4">
-    <input class="w-full focus:outline-none py-6 px-4" type="text" placeholder="Type a message...">
-    <button class="focus:outline-none">
+<form class="w-full flex absolute bottom-0 bg-white px-4" [formGroup]="msgForm" (ngSubmit)="onSubmit()">
+
+    <input class="w-full focus:outline-none py-6 px-4" type="text" placeholder="Type a message..."
+        formControlName="content">
+
+    <button type="submit" class="focus:outline-none">
         <fa-icon class="" icon="paper-plane"></fa-icon>
     </button>
+
 </form>

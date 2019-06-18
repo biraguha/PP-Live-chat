@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from "@angular/common/http";
 
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -28,7 +30,10 @@ import { ChatListComponent } from './pages/chat-list/chat-list.component';
     imports: [
         BrowserModule,
         FontAwesomeModule,
-        AppRoutingModule
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [],
     bootstrap: [AppComponent]
