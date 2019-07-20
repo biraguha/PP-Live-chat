@@ -111,11 +111,11 @@ namespace livechat
                 //     });
                 // }
 
-                // if (env.IsDevelopment())
-                // {
-                //     spa.Options.SourcePath = "ClientApp";
-                //     spa.UseAngularCliServer(npmScript: "start");
-                // }
+                if (env.IsDevelopment())
+                {
+                    spa.Options.SourcePath = "ClientApp";
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
             });
         }
     }
