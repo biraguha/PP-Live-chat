@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
-import { Message } from '../models/message';
+import { Conversation } from 'src/app/shared/models/conversation';
+import { Message } from 'src/app/shared/models/message';
+import { MessageForm } from 'src/app/shared/models/message-form';
 
 @Injectable({
     providedIn: 'root'
@@ -15,13 +17,7 @@ export class ChatService {
     private baseUrl = environment.baseUrl;
     private hubConnection: HubConnection;
 
-    private dataMsgs: Message[];
-    private msgs: BehaviorSubject<Message[]>;
-
-    constructor(private http: HttpClient) {
-        this.dataMsgs = [];
-        this.msgs = new BehaviorSubject<Message[]>(this.dataMsgs);
-    }
+    constructor(private http: HttpClient) { }
 
     public startConnection() {
 
@@ -33,23 +29,21 @@ export class ChatService {
             .start()
             .then(() => console.log('Connection started!'))
             .catch(err => console.log(err));
-
-        this.hubConnection.on('receiveMessage', (message: Message) => {
-            this.dataMsgs.push(message);
-            this.msgs.next(this.dataMsgs);
-            // console.log('ReceiveMessage : ' + message.author + " : " + message.content);
-        });
     }
 
-    public getMessages(): Observable<Message[]> {
-        return this.msgs.asObservable();
+    public getHubConnection() {
+        return this.hubConnection;
     }
 
-    public sendMessage(message: Message) {
+    public getConversations(): Observable<Conversation[]> {
+        return this.http.get<Conversation[]>(this.baseUrl + 'api/message');
+    }
+
+    public sendMessage(message: MessageForm) {
         // this.hubConnection.send('sendMessage', message)
         //     .then(() => console.log("Sended : " + message));
 
-        this.http.post<Message>(this.baseUrl + 'api/message', message).toPromise();
+        this.http.post<MessageForm>(this.baseUrl + 'api/message', message).toPromise();
     }
 
 }

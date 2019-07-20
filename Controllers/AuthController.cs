@@ -1,38 +1,58 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using livechat.Helpers;
 using livechat.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 namespace livechat.Controllers
 {
 
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
     public class AuthController : ControllerBase
     {
+        private readonly AppSettings appSettings;
+
         private HashSet<UserVM> users = new HashSet<UserVM>()
         {
-            new UserVM() { Id = 1, UserName = "Admin", Password = "admin" },
-            new UserVM() { Id = 2, UserName = "Bob", Password = "bob" },
-            new UserVM() { Id = 3, UserName = "Ben", Password = "ben" },
-            new UserVM() { Id = 4, UserName = "Boris", Password = "boris" },
-            new UserVM() { Id = 5, UserName = "Alexis", Password = "alexis" }
+            new UserVM() { Id = 1, UserName = "admin", Password = "admin" },
+            new UserVM() { Id = 2, UserName = "bob", Password = "bob" },
+            new UserVM() { Id = 3, UserName = "ben", Password = "ben" },
+            new UserVM() { Id = 4, UserName = "boris", Password = "boris" },
+            new UserVM() { Id = 5, UserName = "alexis", Password = "alexis" }
         };
 
-        public AuthController() { }
+        public AuthController(IOptions<AppSettings> appSettings)
+        {
+            this.appSettings = appSettings.Value;
+        }
 
+        [HttpGet("user-connected")]
+        public async Task<UserVM> GetAsync(int id)
+        {
+            await Task.Delay(0);
+            return users.FirstOrDefault(u => u.Id == id);
+        }
+
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<string> PostAsync(UserVM user)
         {
             await Task.Delay(0);
             UserVM connected = users.FirstOrDefault(u =>
-                u.UserName.ToLower() == user.UserName.ToLower() &&
-                u.Password.ToLower() == user.Password.ToLower()
+                u.UserName == user.UserName &&
+                u.Password == user.Password
             );
 
             return connected != null ? GenerateToken(connected) : String.Empty;
@@ -40,16 +60,22 @@ namespace livechat.Controllers
 
         private string GenerateToken(UserVM user)
         {
-            string content = JsonConvert.SerializeObject(user);
-            byte[] toEncode = ASCIIEncoding.ASCII.GetBytes(content);
-            return Convert.ToBase64String(toEncode);
-        }
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            byte[] key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature
+                )
+            };
 
-        private UserVM DecodeToken(string token)
-        {
-            byte[] content = Convert.FromBase64String(token);
-            string toDecode = ASCIIEncoding.ASCII.GetString(content);
-            return JsonConvert.DeserializeObject<UserVM>(toDecode);
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
 
     }

@@ -9,21 +9,18 @@ namespace livechat.ViewModels
         // public string Payload { get; set; }
 
         [JsonProperty("id")]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         [JsonProperty("author")]
         public int Author { get; set; }
 
-        [JsonProperty("recipient")]
-        public int Recipient { get; set; }
-
         [JsonProperty("content")]
-        public string content { get; set; }
+        public string Content { get; set; }
 
         [JsonProperty("created_at")]
         public DateTime CreatedAt { get; set; }
 
-        [JsonProperty("update_at")]
-        public DateTime UpdateAt { get; set; }
+        // [JsonProperty("update_at")]
+        // public DateTime UpdateAt { get; set; }
     }
 }

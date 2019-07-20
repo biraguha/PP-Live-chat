@@ -8,9 +8,16 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script>
+        if (!Array.prototype.last) {
+            Array.prototype.last = function () {
+                return this[this.length - 1];
+            };
+        };
+    </script>
 </head>
 
-<body class="max-h-screen">
+<body class="h-screen max-h-screen bg-dark-800">
     <livechat-root></livechat-root>
 </body>
 

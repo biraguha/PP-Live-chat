@@ -1,0 +1,31 @@
+<header *ngIf="(userLogged$ | async) as userLogged">
+    <div class="text-center bg-dark-600 rounded-lg m-4 mb-24 py-4">
+        <figure class="w-24 inline-block mb-4">
+            <img class="rounded-full" src="assets/unknow-user.jpg" alt="Unknow">
+        </figure>
+        <h1 class="text-white">{{ userLogged.username }}</h1>
+    </div>
+
+    <nav class="text-white">
+        <ul class="p-4">
+            <li class="border-l-4 border-dark-300 bg-dark-600 rounded-sm">
+                <a class="block mb-4 p-2">Messages</a>
+            </li>
+            <li class="border-l-4 border-transparent rounded-sm hover:border-dark-300 hover:bg-dark-600">
+                <a class="block mb-4 p-2">Contacts</a>
+            </li>
+            <li class="border-l-4 border-transparent rounded-sm hover:border-dark-300 hover:bg-dark-600">
+                <a class="block mb-4 p-2">Profile</a>
+            </li>
+        </ul>
+
+        <ul class="absolute bottom-0 w-full mb-4 p-4">
+            <li class="border-l-4 border-transparent rounded-sm hover:border-dark-300 hover:bg-dark-600">
+                <a class="block mb-4 p-2">Settings</a>
+            </li>
+            <li class="border-l-4 border-transparent rounded-sm hover:border-dark-300 hover:bg-dark-600">
+                <a class="block mb-4 p-2" (click)="logout()">Logout</a>
+            </li>
+        </ul>
+    </nav>
+</header>

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from 'src/app/services/chat.service';
+import { ChatService } from 'src/app/core/services/chat.service';
 
 @Component({
     selector: 'livechat-home',
     templateUrl: 'home.component.html',
+    host: {'class': 'flex h-full' },
     styles: []
 })
 
