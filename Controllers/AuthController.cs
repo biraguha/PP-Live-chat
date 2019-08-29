@@ -6,56 +6,58 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using livechat.Helpers;
+using livechat.Services;
 using livechat.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 
 namespace livechat.Controllers
 {
-
     [Authorize]
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     [Produces("application/json")]
     public class AuthController : ControllerBase
     {
         private readonly AppSettings appSettings;
+        private readonly IUserService userService;
 
-        private HashSet<UserVM> users = new HashSet<UserVM>()
-        {
-            new UserVM() { Id = 1, UserName = "admin", Password = "admin" },
-            new UserVM() { Id = 2, UserName = "bob", Password = "bob" },
-            new UserVM() { Id = 3, UserName = "ben", Password = "ben" },
-            new UserVM() { Id = 4, UserName = "boris", Password = "boris" },
-            new UserVM() { Id = 5, UserName = "alexis", Password = "alexis" }
-        };
-
-        public AuthController(IOptions<AppSettings> appSettings)
+        public AuthController(
+            IOptions<AppSettings> appSettings,
+            IUserService userService)
         {
             this.appSettings = appSettings.Value;
+            this.userService = userService;
+        }
+
+        [HttpGet("users")]
+        public async Task<IEnumerable<UserVM>> GetAllAsync()
+        {
+            return await userService.GetUsers();
         }
 
         [HttpGet("user-connected")]
-        public async Task<UserVM> GetAsync(int id)
+        public async Task<UserVM> GetAsync(string id)
         {
-            await Task.Delay(0);
-            return users.FirstOrDefault(u => u.Id == id);
+            return await userService.GetUser(id);
         }
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<string> PostAsync(UserVM user)
+        public async Task<Object> PostAsync(UserFormVM user)
         {
-            await Task.Delay(0);
-            UserVM connected = users.FirstOrDefault(u =>
-                u.UserName == user.UserName &&
-                u.Password == user.Password
-            );
+            var userExist = await userService.UserExist(user.UserName, user.Password);
 
-            return connected != null ? GenerateToken(connected) : String.Empty;
+            string token = userExist != null ? GenerateToken(userExist) : String.Empty;
+            return new LoginResponseVM() 
+            { 
+                Success = (userExist != null),
+                Token = token,
+                UserId = userExist.Id,
+                FullName = userExist.FullName
+            };
         }
 
         private string GenerateToken(UserVM user)
@@ -66,7 +68,8 @@ namespace livechat.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.Id),
+                    new Claim(ClaimTypes.NameIdentifier, user.FullName)
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(

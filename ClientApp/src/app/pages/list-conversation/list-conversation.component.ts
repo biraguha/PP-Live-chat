@@ -21,13 +21,13 @@ export class ListConversationsComponent implements OnInit {
     public searchAuthor: string;
 
     constructor(private chatService: ChatService) { }
-
+    
     ngOnInit() {
-        this.chatService.getConversations().subscribe(conv => 
-            this.conversations = conv);
+        this.chatService.getConversations().subscribe((convs: Conversation[]) => 
+            this.conversations = convs);
 
         this.chatService.getHubConnection().on('receiveMessage', (data: any) => {
-            const convId: number = data.id;
+            const convId: string = data.id;
             const message: Message = data.newMessage;
 
             let conversation = this.conversations.find(c => c.id == convId); 

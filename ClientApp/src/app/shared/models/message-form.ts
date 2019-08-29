@@ -1,5 +1,5 @@
 export interface MessageForm {
-    conversation: number;
-    author: number;
+    conversation: string;
+    author: string;
     content: string;
 }

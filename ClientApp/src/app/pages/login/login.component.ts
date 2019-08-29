@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
 
 import { AuthService } from 'src/app/core/services/auth.service';
-import { User } from 'src/app/shared/models/user';
+import { UserForm } from 'src/app/shared/models/user-form';
 
 @Component({
     selector: 'livechat-login',
@@ -13,21 +12,19 @@ import { User } from 'src/app/shared/models/user';
 
 export class LoginComponent implements OnInit {
 
-    public isLoggedIn: boolean;
+    public loginForm: FormGroup;
 
-    public loginForm: FormGroup = new FormGroup({
-        username: new FormControl(''),
-        password: new FormControl('')
-    });
-
-    constructor(private authService: AuthService) { }
-
-    ngOnInit() {
-        this.isLoggedIn = this.authService.isLoggedIn();
+    constructor(private authService: AuthService) {
+        this.loginForm = new FormGroup({
+            username: new FormControl(''),
+            password: new FormControl('')
+        });
     }
 
+    ngOnInit() { }
+
     onSubmit() {
-        let newUser: User = this.loginForm.value;
+        let newUser: UserForm = this.loginForm.value;
         this.authService.login(newUser);
         this.loginForm.reset();
     }

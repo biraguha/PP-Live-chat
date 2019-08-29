@@ -1,9 +1,9 @@
-<header *ngIf="(userLogged$ | async) as userLogged">
+<header>
     <div class="text-center bg-dark-600 rounded-lg m-4 mb-24 py-4">
         <figure class="w-24 inline-block mb-4">
             <img class="rounded-full" src="assets/unknow-user.jpg" alt="Unknow">
         </figure>
-        <h1 class="text-white">{{ userLogged.username }}</h1>
+        <h1 class="text-white">{{ pseudo }}</h1>
     </div>
 
     <nav class="text-white">

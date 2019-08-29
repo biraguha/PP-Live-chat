@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
+using livechat.Data;
 using livechat.Helpers;
 using livechat.Hubs;
+using livechat.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace livechat
@@ -30,6 +31,10 @@ namespace livechat
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
             services.AddCors(o => o.AddPolicy("CorsPolicy", options =>
             {
                 options
@@ -39,21 +44,19 @@ namespace livechat
                     .AllowCredentials();
             }));
 
+            services.AddAutoMapper(typeof(MappingProfile));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSignalR();
 
-            var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
-            var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(x => 
+            .AddJwtBearer(x =>
             {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
@@ -68,10 +71,14 @@ namespace livechat
                 };
             });
 
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IConversationService, ConversationService>();
+
+            // services.AddSpaStaticFiles(configuration =>
+            // {
+            //     configuration.RootPath = "ClientApp/dist";
+            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,35 +95,31 @@ namespace livechat
                 app.UseHttpsRedirection();
             }
 
-            app.UseSpaStaticFiles();
+            // app.UseSpaStaticFiles();
             app.UseCors("CorsPolicy");
             app.UseSignalR(routes => routes.MapHub<ChatHub>("/chat"));
             app.UseAuthentication();
             app.UseMvc();
 
-            app.UseSpa(spa =>
-            {
+            // app.UseSpa(spa =>
+            // {
+            //     if (env.IsProduction())
+            //     {
+            //         // spa.Options.SourcePath = "ClientApp/dist";
 
-                if (env.IsProduction())
-                {
-                    spa.Options.SourcePath = "ClientApp/dist";
-                }
+            //         // spa.UseSpaPrerendering(options => 
+            //         // {
+            //         //     options.BootModulePath = $"{ spa.Options.SourcePath }/dist/server/main.js";
+            //         //     options.ExcludeUrls = new [] { "/sockjs-node" };
+            //         // });
+            //     }
 
-                // if (env.IsProduction())
-                // {
-                //     spa.UseSpaPrerendering(options => 
-                //     {
-                //         options.BootModulePath = $"{ spa.Options.SourcePath }/dist/server/main.js";
-                //         options.ExcludeUrls = new [] { "/sockjs-node" };
-                //     });
-                // }
-
-                // if (env.IsDevelopment())
-                // {
-                //     spa.Options.SourcePath = "ClientApp";
-                //     spa.UseAngularCliServer(npmScript: "start");
-                // }
-            });
+            //     // if (env.IsDevelopment())
+            //     // {
+            //     //     spa.Options.SourcePath = "ClientApp";
+            //     //     spa.UseAngularCliServer(npmScript: "start");
+            //     // }
+            // });
         }
     }
 }

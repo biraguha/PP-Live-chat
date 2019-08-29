@@ -12,12 +12,12 @@ import { User } from 'src/app/shared/models/user';
 
 export class LayoutHeaderComponent implements OnInit {
 
-    public userLogged$: Observable<User>;
+    public pseudo: string;
 
     constructor(private authService: AuthService) { }
 
     ngOnInit() {
-        this.userLogged$ = this.authService.getActiveUser();        
+        this.pseudo = localStorage.getItem('fullname');
     }
 
     logout() {

@@ -6,7 +6,7 @@ namespace livechat.ViewModels
     public class MessageFormVM
     {
         [JsonProperty("conversation")]
-        public int Conversation { get; set; }
+        public int ConversationId { get; set; }
 
         [JsonProperty("author")]
         public int Author { get; set; }

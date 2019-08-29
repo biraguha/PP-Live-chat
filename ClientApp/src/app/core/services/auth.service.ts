@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import * as jwt_decode from 'jwt-decode';
+import { HttpClient } from '@angular/common/http';
 
 import { environment } from 'src/environments/environment';
-import { User } from '../../shared/models/user';
+import { UserForm } from 'src/app/shared/models/user-form';
 
 @Injectable({
     providedIn: 'root'
@@ -28,21 +26,14 @@ export class AuthService {
         return localStorage.getItem('token');
     }
 
-    getActiveUser(): Observable<User> {
-        let id: string = localStorage.getItem('userid');
-        const params = new HttpParams().set('id', id);
-
-        return this.http.get<User>(this.baseUrl + 'api/auth/user-connected', { params });
-    }
-
-    public login(user: User) {
+    public login(user: UserForm) {
         this.http.post(this.baseUrl + 'api/auth/login', user).subscribe(
-            (token: string) => {
-                if (token) {
-                    let decoded = jwt_decode(token);
+            (data: any) => {
+                if (data.success) {
 
-                    localStorage.setItem('token', token);
-                    localStorage.setItem('userid', decoded.unique_name);
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('userid', data.userid);
+                    localStorage.setItem('fullname', data.fullname);
 
                     this.route.navigate(['messages']);
                 }
@@ -53,6 +44,7 @@ export class AuthService {
     public logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('userid');
+        localStorage.removeItem('fullname');
 
         this.route.navigate(['login']);
     }

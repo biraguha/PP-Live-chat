@@ -6,13 +6,10 @@ namespace livechat.ViewModels
     public class UserVM
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
-        
-        [JsonProperty("username")]
-        public string UserName { get; set; }
-        
-        [JsonProperty("password")]
-        public string Password { get; set; }
+        public string Id { get; set; }
+
+        [JsonProperty("fullname")]
+        public string FullName { get; set; }
 
     }
 }

@@ -12,17 +12,17 @@ namespace livechat.Hubs
         //     await Clients.All.SendAsync("ReceiveMessage", message);
         // }
 
-        public override Task OnConnectedAsync()
-        {
-            System.Console.WriteLine(Context.ConnectionId);
-            UserHandler.ConnectedIds.Add(Context.ConnectionId);
-            return base.OnConnectedAsync();
-        }
+        // public override Task OnConnectedAsync()
+        // {
+        //     System.Console.WriteLine(Context.ConnectionId);
+        //     UserHandler.ConnectedIds.Add(Context.ConnectionId);
+        //     return base.OnConnectedAsync();
+        // }
 
-        public override Task OnDisconnectedAsync(Exception exception)
-        {
-            UserHandler.ConnectedIds.Remove(Context.ConnectionId);
-            return base.OnDisconnectedAsync(exception);
-        }
+        // public override Task OnDisconnectedAsync(Exception exception)
+        // {
+        //     UserHandler.ConnectedIds.Remove(Context.ConnectionId);
+        //     return base.OnDisconnectedAsync(exception);
+        // }
     }
 }

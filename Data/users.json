@@ -1,0 +1,26 @@
+[{
+    "id": "376ab8a3-67c5-4295-81dd-30048d627413",
+    "username": "admin",
+    "fullname": "Admin Joe",
+    "password": "admin"
+}, {
+    "id": "a211972c-7b0c-4653-8949-3acaa7a6d8be",
+    "username": "bob",
+    "fullname": "Bob L'éponge",
+    "password": "bob"
+}, {
+    "id": "b5e3b6bc-b744-4ad3-8cd6-f4f65d8bb289",
+    "username": "ben",
+    "fullname": "Ben Drance",
+    "password": "ben"
+}, {
+    "id": "68a1bcd9-ee43-4fbf-acae-72900ac0673a",
+    "username": "boris",
+    "fullname": "Boris Wetherburn",
+    "password": "boris"
+}, {
+    "id": "40e328e4-a2fc-4245-b1d2-d75516b57318",
+    "username": "alain",
+    "fullname": "Alain Catherick",
+    "password": "alain"
+}]

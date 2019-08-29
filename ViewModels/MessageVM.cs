@@ -12,7 +12,7 @@ namespace livechat.ViewModels
         public string Id { get; set; }
 
         [JsonProperty("author")]
-        public int Author { get; set; }
+        public string AuthorId { get; set; }
 
         [JsonProperty("content")]
         public string Content { get; set; }

@@ -22,27 +22,25 @@ export class ConversationComponent implements OnInit {
 
     public unknow: string = 'assets/unknow-user.jpg';
 
-    public user$: Observable<User>;
     public msgForm: FormGroup;
+    public userId: string;
 
-    constructor(
-        private chatService: ChatService,
-        private authService: AuthService) { }
+    constructor(private chatService: ChatService) { }
 
     ngOnInit() {
-        this.user$ = this.authService.getActiveUser();
+        this.userId = localStorage.getItem('userid');
         
         this.msgForm = new FormGroup({
             content: new FormControl
         });
     }
 
-    onSubmit(userId: number) {
+    onSubmit() {
         let content: string = this.msgForm.value.content;
 
         let message: MessageForm = {
             conversation: this.conversation.id,
-            author: userId,
+            author: this.userId,
             content: content
         }
 

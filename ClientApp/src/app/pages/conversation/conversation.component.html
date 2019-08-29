@@ -1,4 +1,4 @@
-<section *ngIf="conversation && (user$ | async) as user" class="flex flex-col bg-dark-800 h-full">
+<section *ngIf="conversation" class="flex flex-col bg-dark-800 h-full">
 
     <div class="w-full flex items-center justify-between bg-dark-600 text-white px-4 py-2">
         <div class="flex">
@@ -21,7 +21,7 @@
         <div 
             class="flex mb-6" 
             *ngFor="let message of conversation.messages"
-            [ngClass]="message.author === user.id ? 'flex-row-reverse mr-4' : 'ml-4'">
+            [ngClass]="message.author === userId ? 'flex-row-reverse mr-4' : 'ml-4'">
             
             <figure class="w-10 flex-shrink-0">
                 <img class="rounded-full" src="assets/unknow-user.jpg" alt="Unknow">
@@ -40,7 +40,7 @@
         <form 
             class="flex rounded-sm bg-dark-300 px-2" 
             [formGroup]="msgForm"
-            (ngSubmit)="onSubmit(user.id)">
+            (ngSubmit)="onSubmit()">
 
             <input 
                 class="w-full bg-dark-300 outline-none py-2" 

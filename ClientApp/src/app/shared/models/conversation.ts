@@ -1,9 +1,11 @@
 import { Message } from './message';
+import { User } from './user';
 
 export interface Conversation {
-    id: number;
-    author: string;
+    id: string;
     recipient: string;
+    authors: Array<User>;
     messages: Array<Message>;
+    created_at: Date;
     update_at: Date;
 }
